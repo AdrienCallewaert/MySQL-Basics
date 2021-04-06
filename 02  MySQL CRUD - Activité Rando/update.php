@@ -1,3 +1,29 @@
+
+
+<?php 
+require "PDO.php";
+
+$id = $_GET["id"];
+$req = 'SELECT * FROM hiking WHERE id='.$id.'';
+$result = $bdd->query($req);
+$data = $result->fetch();
+$result->closeCursor();
+
+if (isset($_POST['button'])) {
+	$name = $_POST['name'];
+	$difficulty = $_POST['difficulty'];
+	$distance = $_POST['distance'];
+	$duration = $_POST['duration'];
+	$height_difference = $_POST['height_difference'];
+	$insertReq = 'UPDATE hiking SET name ="'.$name.'",difficulty="'.$difficulty.'",distance='.$distance.',duration="'.$duration.'",height_difference='.$height_difference.' WHERE id='.$id.'';
+	$insert = $bdd->prepare($insertReq);
+	$insert->execute();
+	echo "La randonnée a été ajoutée avec succès.";
+	$insert->closeCursor();
+};
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>

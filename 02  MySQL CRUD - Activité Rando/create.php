@@ -1,3 +1,42 @@
+<?php
+
+session_start();
+
+$servername = 'mysql:host=localhost;dbname=randoapp;charset=utf8';
+$username = 'root';
+$password = '';
+
+try {
+	$bdd = new PDO("$servername","$username","$password");
+		
+	if (isset($_POST["name"]) && isset($_POST["difficulty"]) && isset($_POST["distance"]) && isset($_POST["duration"]) && isset($_POST["height_difference"])) {
+		
+		$bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		
+		$name = strval($_POST["name"]);
+		$difficulty = $_POST["difficulty"];
+		$distance = (int)$_POST["distance"];
+		$duration = $_POST["duration"];
+		$height_difference = (int)$_POST["height_difference"];
+			
+		$stmt = $bdd->prepare("INSERT INTO hiking (`name`, difficulty, distance, duration, height_difference) VALUES (?, ?, ?, ?, ?)");
+		$stmt->bindValue(1, $name);
+		$stmt->bindValue(2, $difficulty);
+		$stmt->bindValue(3, $distance);
+		$stmt->bindValue(4, $duration);
+		$stmt->bindValue(5, $height_difference);
+			
+		$stmt->execute();
+			
+		echo "New record created successfully";
+	}
+}
+catch(Exception $e) {
+	die('Erreur : '.$e->getMessage());
+}
+$bdd = null;
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
